@@ -6,49 +6,84 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form Submission</title>
+    <style>
+        body {
+            background: linear-gradient(to right, #FFB6C1, #87CEEB, #90EE90); /* Gradient background with multiple colors */
+        }
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #FFFFFF;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.5s ease-in-out; /* Animation for form entrance */
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="tel"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button[type="submit"] {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        /* Animation keyframes */
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 <body>
     <h1 style="text-align: center;">Form Submission</h1>
-    <form action="/submit" method="POST" onsubmit="return validateForm()" style="max-width: 500px; margin: 0 auto;">
-        <div style="margin-bottom: 10px;">
-            <label for="name" style="display: block;">Name:</label>
-            <input type="text" id="name" name="name" required style="width: 100%; padding: 8px;">
-        </div>
-        <div style="margin-bottom: 10px;">
-            <label for="email" style="display: block;">Email:</label>
-            <input type="email" id="email" name="email" required style="width: 100%; padding: 8px;">
-        </div>
-        <div style="margin-bottom: 10px;">
-            <label for="username" style="display: block;">Username:</label>
-            <input type="text" id="username" name="username" required style="width: 100%; padding: 8px;">
-        </div>
-        <div style="margin-bottom: 10px;">
-            <label for="password" style="display: block;">Password:</label>
-            <input type="password" id="password" name="password" required style="width: 100%; padding: 8px;">
-        </div>
-        <div style="margin-bottom: 10px;">
-            <label for="confirm_password" style="display: block;">Confirm Password:</label>
-            <input type="password" id="confirm_password" name="confirm_password" required style="width: 100%; padding: 8px;">
-        </div>
-        <div style="margin-bottom: 10px;">
-            <label for="address" style="display: block;">Address:</label>
-            <input type="text" id="address" name="address" required style="width: 100%; padding: 8px;">
-        </div>
-        <div style="margin-bottom: 10px;">
-            <label for="phone" style="display: block;">Phone:</label>
-            <input type="tel" id="phone" name="phone" required style="width: 100%; padding: 8px;">
-        </div>
-        <div style="margin-bottom: 10px;">
-            <label for="country" style="display: block;">Country:</label>
-            <select id="country" name="country" style="width: 100%; padding: 8px;">
-                <option value="USA">USA</option>
-                <option value="Canada">Canada</option>
-                <!-- Add more options as needed -->
-            </select>
-        </div>
-        <div style="margin-top: 10px;">
-            <button type="submit" style="width: 100%; padding: 10px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">Submit</button>
-        </div>
+    <form action="/submit" method="POST" onsubmit="return validateForm()">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        <br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <br>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <br>
+        <label for="confirm_password">Confirm Password:</label>
+        <input type="password" id="confirm_password" name="confirm_password" required>
+        <br>
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address" required>
+        <br>
+        <label for="phone">Phone:</label>
+        <input type="tel" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required>
+        <br>
+        <label for="country">Country:</label>
+        <select id="country" name="country">
+            <option value="USA">USA</option>
+            <option value="Canada">Canada</option>
+            <!-- Add more options as needed -->
+        </select>
+        <br>
+        <button type="submit">Submit</button>
     </form>
 
     <script>
