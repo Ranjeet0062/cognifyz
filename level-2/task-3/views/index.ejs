@@ -1,0 +1,215 @@
+<!-- views/index.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Submission</title>
+    <style>
+        /* Styles for modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* End modal styles */
+
+        /* Other styles */
+        .btn {
+            background-color: #e84949;
+            width: fit-content;
+            color: white;
+            padding: 0.8rem 2.3rem;
+            box-shadow: 5px 5px 7px 0px #0000003f;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.5s;
+            font-weight: 500;
+            border: solid 3px transparent;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn::before {
+            content: "";
+            position: absolute;
+            background-color: #fff;
+            top: 0px;
+            left: 0;
+            right: 0;
+            bottom: 0px;
+            z-index: -1;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: all 0.8s;
+        }
+
+        .btn:hover::before {
+            transform: scaleX(1);
+        }
+
+        .btn:hover {
+            border: solid 3px #e84949;
+            color: black;
+        }
+
+        body {
+            background: linear-gradient(to right, #FFB6C1, #87CEEB, #90EE90);
+            /* Gradient background with multiple colors */
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #FFFFFF;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.5s ease-in-out;
+            /* Animation for form entrance */
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="tel"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="registration-form">
+        <h1  style="text-align: center;">Form Submission</h1>
+        <form id="registration-form" action="/submit" method="POST">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            <br>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <br>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <br>
+            <label for="confirm_password">Confirm Password:</label>
+            <input type="password" id="confirm_password" name="confirm_password" required>
+            <br>
+            <label for="address">Address:</label>
+            <input type="text" id="address" name="address" required>
+            <br>
+            <label for="phone">Phone:</label>
+            <input type="tel" id="phone" name="phone" required>
+            <br>
+            <label for="country">Country:</label>
+            <select id="country" name="country">
+                <option value="India">India</option>
+                <option value="USA">USA</option>
+                <option value="Canada">Canada</option>
+                <option value="Austrelia">Austrelia</option>
+                <option value="China">China</option>
+                <option value="Japan">Japan</option>
+                <!-- Add more options as needed -->
+            </select>
+            <br>
+            <button type="submit" class="btn" style="width: 100%;">Submit</button>
+        </form>
+    </div>
+
+
+    <!-- Modal for displaying error message -->
+    <div id="errorModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p id="errorMessage"></p>
+        </div>
+    </div>
+
+    <script>
+        function validateForm() {
+            const email = document.getElementById('email').value;
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                displayError('Please enter a valid email address.');
+                return false;
+            }
+            return true;
+        }
+
+        function displayError(message) {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = message;
+
+            const errorModal = document.getElementById('errorModal');
+            errorModal.style.display = 'block';
+
+            // Close the modal when clicking on the close button
+            const closeButton = document.getElementsByClassName('close')[0];
+            closeButton.onclick = function () {
+                errorModal.style.display = 'none';
+            }
+
+            // Close the modal when clicking outside of it
+            window.onclick = function (event) {
+                if (event.target == errorModal) {
+                    errorModal.style.display = 'none';
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
