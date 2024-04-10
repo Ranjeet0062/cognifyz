@@ -29,6 +29,7 @@ app.get('/', (req, res) => {
 // Handle form submission
 app.post('/submit', (req, res) => {
     // Server-side validation
+    console.log(req.body)
     const { name, email, username, password, confirm_password, address, phone, country } = req.body;
     if (!name || !email || !username || !password || !confirm_password || !address || !phone || !country) {
         return res.status(400).send('All fields are required');
