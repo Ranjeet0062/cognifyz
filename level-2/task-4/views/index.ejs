@@ -10,23 +10,23 @@
     <style>
         /* Styles for modal */
         .modal {
-            display: none; 
-            position: fixed; 
-            z-index: 1; 
+            display: none;
+            position: fixed;
+            z-index: 1;
             left: 0;
             top: 0;
-            width: 100%; 
-            height: 100%; 
-            overflow: auto; 
-            background-color: rgba(0,0,0,0.4); 
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
         }
 
         .modal-content {
             background-color: #fefefe;
-            margin: 15% auto; 
+            margin: 15% auto;
             padding: 20px;
             border: 1px solid #888;
-            width: 80%; 
+            width: 80%;
             text-align: center;
             border-radius: 10px;
         }
@@ -137,6 +137,7 @@
         <br>
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" required>
+        <div id="email-message"></div>
         <br>
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required>
@@ -144,15 +145,17 @@
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required>
         <div id="password-strength"></div>
+        <div id="password-message"></div>
         <br>
         <label for="confirm_password">Confirm Password:</label>
         <input type="password" id="confirm_password" name="confirm_password" required>
+        <div id="password-match"></div>
         <br>
         <label for="address">Address:</label>
         <input type="text" id="address" name="address" required>
         <br>
         <label for="phone">Phone:</label>
-        <input type="tel" id="phone" name="phone"  required>
+        <input type="tel" id="phone" name="phone" required>
         <br>
         <label for="country">Country:</label>
         <select id="country" name="country">
@@ -177,40 +180,112 @@
     </div>
 
     <script>
-        // Password strength checker function
-        function checkPasswordStrength() {
-            const password = document.getElementById('password').value;
-            const strengthDiv = document.getElementById('password-strength');
-            const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})");
-            const mediumRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})");
-            if (strongRegex.test(password)) {
-                strengthDiv.innerHTML = "<span style='color:green;'>Strong Password</span>";
-            } else if (mediumRegex.test(password)) {
-                strengthDiv.innerHTML = "<span style='color:orange;'>Medium Password</span>";
-            } else {
-                strengthDiv.innerHTML = "<span style='color:red;'>Weak Password</span>";
-            }
-        }
+        document.getElementById('registration-form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent form submission for now
 
-        // Event listeners for password field
-        document.getElementById('password').addEventListener('keyup', checkPasswordStrength);
-        document.getElementById('password').addEventListener('change', checkPasswordStrength);
-
-        // Modal close button functionality
-        document.getElementsByClassName('close')[0].onclick = function() {
-            document.getElementById('errorModal').style.display = "none";
-        }
-
-        // Form submission validation
-        document.getElementById('registration-form').addEventListener('submit', function(event) {
+            // Perform custom form validation
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirm_password').value;
-            if (password !== confirmPassword) {
-                document.getElementById('errorMessage').innerText = "Passwords do not match.";
-                document.getElementById('errorModal').style.display = "block";
-                event.preventDefault();
+
+            // Validate password strength
+            const passwordStrength = document.getElementById('password-strength');
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            if (passwordRegex.test(password)) {
+                console.log(password)
+                passwordStrength.textContent = 'Password strength: Strong';
+                passwordStrength.style.color = 'green';
+            } else {
+                passwordStrength.textContent = 'Password strength: Weak (Must contain at least 8 characters, including uppercase, lowercase, numbers, and special characters)';
+                passwordStrength.style.color = 'red';
+            }
+
+            // Validate password match
+            const passwordMatch = document.getElementById('password-match');
+            if (password === confirmPassword) {
+                passwordMatch.textContent = ""
+                passwordMatch.textContent = 'Passwords match';
+                passwordMatch.style.color = 'green';
+            } else {
+                passwordMatch.textContent = ""
+                passwordMatch.textContent = 'Passwords do not match';
+                passwordMatch.style.color = 'red';
+            }
+
+            // If all validations pass, proceed with form submission
+            if (username && email && password && confirmPassword && password === confirmPassword) {
+                // Perform form submission (e.g., send data to server or navigate to another page)
+                console.log('Form submitted successfully');
+                // For now, let's just reset the form
+                event.target.reset();
             }
         });
+        // Get the password input element
+        const passwordInput = document.getElementById('password');
+
+        // Add an event listener for the 'change' event
+        passwordInput.addEventListener('change', function (event) {
+            // Execute a function when the password field changes
+            const password = event.target.value;
+            // You can perform any actions you want with the password here
+            console.log('Password changed:', password);
+            // You can also call a function to validate the password or perform other tasks
+            validatePassword(password);
+        });
+
+        // Define a function to validate the password
+        function validatePassword(password) {
+            const passwordmessage = document.getElementById('password-message');
+
+            // Add your password validation logic here
+            // For example, check if the password meets certain criteria
+            if (password.length < 8) {
+                passwordmessage.textContent = "password must be 8 carecter"
+                passwordmessage.style.color = 'red';
+                passwordmessage.style.fontWeight = "bold"
+
+                return
+
+            } else {
+                passwordmessage.textContent = ""
+            }
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            if (passwordRegex.test(password)) {
+                passwordmessage.textContent = ""
+                passwordmessage.textContent = "Strong Password"
+                passwordmessage.style.color = 'green';
+                passwordmessage.style.fontWeight = "bold"
+            } else {
+                passwordmessage.textContent = ""
+                passwordmessage.textContent = "Week Password"
+                passwordmessage.style.color = 'red';
+                passwordmessage.style.fontWeight = "bold"
+
+            }
+        }
+        const emailInput = document.getElementById('email');
+        emailInput.addEventListener('change', function (event) {
+            // Execute a function when the password field changes
+            const email = event.target.value;
+            // You can perform any actions you want with the password here
+            console.log('Password changed:', email);
+            // You can also call a function to validate the password or perform other tasks
+            validateEmail(email);
+        });
+
+        function validateEmail(email) {
+            const emailmessage = document.getElementById('email-message');
+
+            const emailRegex = /^(?=.{1,254}$)((?=.{1,64}@)(?:(?:(?!-)(?:[a-zA-Z0-9\-]{1,63}\.?)+(?<!\.)@[a-zA-Z0-9\-]{1,63}(?:\.[a-zA-Z]{2,})+)|(?:(?!-)(?:[a-zA-Z0-9\-]{1,63}\.?)+@[a-zA-Z0-9\-]{1,63}\.{1}[a-zA-Z]{2,})))$/;
+            if (!emailRegex.test(email)) {
+                emailmessage.textContent = "invalide email"
+                emailmessage.style.color = 'red';
+                emailmessage.style.fontWeight = "bold"
+            } else {
+                emailmessage.textContent = ""
+            }
+        }
     </script>
 </body>
 

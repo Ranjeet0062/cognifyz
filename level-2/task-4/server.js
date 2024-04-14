@@ -8,7 +8,13 @@ const PORT = 3000;
 
 // Middleware to parse form data
 app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(express.static('public', {
+    setHeaders: (res, path, stat) => {
+        if (path.endsWith('.js')) {
+            res.set('Content-Type', 'text/javascript');
+        }
+    }
+}));
 // Set views directory
 app.set('views', path.join(__dirname, 'views'));
 
@@ -16,7 +22,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 // Serve static files (like HTML)
-app.use(express.static('public'));
+// app.use(express.static('public'));
 
 // Temporary storage for validated form data
 let formData = [];
